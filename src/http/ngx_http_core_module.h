@@ -89,6 +89,9 @@ typedef struct {
     unsigned                   reuseport:1;
     unsigned                   so_keepalive:2;
     unsigned                   proxy_protocol:1;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+    unsigned                   proxy_protocol_detect:1;
+#endif    
 #if (T_NGX_XQUIC)
     unsigned                   xquic:1;
 #endif
@@ -259,6 +262,9 @@ struct ngx_http_addr_conf_s {
     unsigned                   ssl:1;
     unsigned                   http2:1;
     unsigned                   proxy_protocol:1;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+    unsigned                   proxy_protocol_detect:1;
+#endif    
 };
 
 

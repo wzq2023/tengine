@@ -369,6 +369,13 @@ ngx_http_init_connection(ngx_connection_t *c)
         c->log->action = "reading PROXY protocol";
     }
 
+ #if (T_NGX_PROXY_PROTOCOL_DETECT)
+     if (hc->addr_conf->proxy_protocol_detect) {
+        hc->proxy_protocol_detect = 1;
+        c->log->action = "reading PROXY protocol campatoble";
+    }
+ #endif
+
     if (rev->ready) {
         /* the deferred accept(), iocp */
 
@@ -501,7 +508,16 @@ ngx_http_wait_request_handler(ngx_event_t *rev)
     c->received += n;
 #endif
 
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+    if (hc->proxy_protocol || hc->proxy_protocol_detect) {
+        if(hc->proxy_protocol_detect) {
+            hc->proxy_protocol_detect = 0;
+            c->proxy_protocol_detect = 1;
+        }
+    }
+#else
     if (hc->proxy_protocol) {
+#endif        
         hc->proxy_protocol = 0;
 
         p = ngx_proxy_protocol_read(c, b->pos, b->last);

@@ -1299,6 +1299,9 @@ ngx_http_add_addresses(ngx_conf_t *cf, ngx_http_core_srv_conf_t *cscf,
 #if (T_NGX_HAVE_XUDP)
     ngx_uint_t             xudp;
 #endif
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+    ngx_uint_t             proxy_protocol_detect;
+#endif
 
     /*
      * we cannot compare whole sockaddr struct's as kernel
@@ -1329,6 +1332,9 @@ ngx_http_add_addresses(ngx_conf_t *cf, ngx_http_core_srv_conf_t *cscf,
         proxy_protocol = lsopt->proxy_protocol || addr[i].opt.proxy_protocol;
         protocols = lsopt->proxy_protocol;
         protocols_prev = addr[i].opt.proxy_protocol;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+        proxy_protocol_detect = lsopt->proxy_protocol_detect || addr[i].opt.proxy_protocol_detect;
+#endif        
 
 #if (NGX_HTTP_SSL)
         ssl = lsopt->ssl || addr[i].opt.ssl;
@@ -1431,6 +1437,9 @@ ngx_http_add_addresses(ngx_conf_t *cf, ngx_http_core_srv_conf_t *cscf,
 
         addr[i].opt.default_server = default_server;
         addr[i].opt.proxy_protocol = proxy_protocol;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+        addr[i].opt.proxy_protocol_detect = proxy_protocol_detect;
+#endif        
 #if (NGX_HTTP_SSL)
         addr[i].opt.ssl = ssl;
 #endif
@@ -2021,6 +2030,9 @@ ngx_http_add_addrs(ngx_conf_t *cf, ngx_http_port_t *hport,
         addrs[i].conf.http2 = addr[i].opt.http2;
 #endif
         addrs[i].conf.proxy_protocol = addr[i].opt.proxy_protocol;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+        addrs[i].conf.proxy_protocol = add[i].opt.proxy_protocol_detect;
+#endif        
 #if (T_NGX_XQUIC)
         addrs[i].conf.xquic = addr[i].opt.xquic;
 #endif
@@ -2091,6 +2103,9 @@ ngx_http_add_addrs6(ngx_conf_t *cf, ngx_http_port_t *hport,
         addrs6[i].conf.http2 = addr[i].opt.http2;
 #endif
         addrs6[i].conf.proxy_protocol = addr[i].opt.proxy_protocol;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+        addrs6[i].conf.proxy_protocol_detect = addr[i].opt.proxy_protocol_detect;
+#endif        
 #if (T_NGX_XQUIC)
         addrs6[i].conf.xquic = addr[i].opt.xquic;
 #endif

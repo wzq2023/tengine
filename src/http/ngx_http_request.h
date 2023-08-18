@@ -334,6 +334,9 @@ typedef struct {
 
     unsigned                          ssl:1;
     unsigned                          proxy_protocol:1;
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+    unsigned                          proxy_protocol_detect:1;
+#endif    
 } ngx_http_connection_t;
 
 

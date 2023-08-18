@@ -268,6 +268,10 @@ struct ngx_connection_s {
 #if (T_NGX_XQUIC)
     unsigned            xquic_conn:1;
 #endif
+
+#if (T_NGX_PROXY_PROTOCOL_DETECT)
+    unsigned            proxy_protocol_detect:1;
+#endif
 };
 
 
